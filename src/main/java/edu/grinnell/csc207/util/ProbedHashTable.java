@@ -245,15 +245,16 @@ public class ProbedHashTable<K, V> implements HashTable<K, V> {
     int index = find(key);
     if (this.pairs[index] != null) {
       result = ((Pair<K, V>) this.pairs[index]).value();
-    } // if
-    this.pairs[index] = new Pair<K, V>(key, value);
-    // Report activity, if appropriate
-    if (REPORT_BASIC_CALLS && (reporter != null)) {
-      reporter.report("pairs[" + index + "] = " + key + ":" + value);
-    } // if reporter != null
-    // Note that we've incremented the size.
-    ++this.size;
-    // And we're done
+    } else {
+      this.pairs[index] = new Pair<K, V>(key, value);
+      // Report activity, if appropriate
+      if (REPORT_BASIC_CALLS && (reporter != null)) {
+        reporter.report("pairs[" + index + "] = " + key + ":" + value);
+      } // if reporter != null
+      // Note that we've incremented the size.
+      ++this.size;
+      // And we're done
+    } // if-else
     return result;
   } // set(K, V)
 

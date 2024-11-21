@@ -62,7 +62,12 @@ public class HashTableExperiments {
    */
   public static void repeatedSetExpt(PrintWriter pen,
       HashTable<String, String> htab) {
-    // STUB
+    htab.set("dog", "golden retriever");
+    htab.set("dog", "goldie");
+    htab.set("dog", "golden doodle");
+    htab.set("dog","labrador");
+    htab.set("dog","chihuahua");
+    htab.dump(pen);
   } // repeatedSetExpt(PrintWriter, HashTable)
 
   /**
