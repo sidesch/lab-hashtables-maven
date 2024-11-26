@@ -369,8 +369,19 @@ public class ProbedHashTable<K, V> implements HashTable<K, V> {
     Object[] newPairs = new Object[newSize];
     // Move all pairs from the old table to their appropriate
     // location in the new table.
-    // STUB
-    // And update our pairs
+    for (int i = 0; i < this.pairs.length; i++) {
+      if (this.pairs[i] != null) {
+        @SuppressWarnings("unchecked")
+        Pair<K,V> pair = (Pair<K,V>) this.pairs[i];
+        int hash = Math.abs(pair.key().hashCode()) % newSize;
+        int index = 0;
+        while (newPairs[hash + index % newSize] != null) {
+          index++;
+        } // while
+        newPairs[hash + index % newSize] = this.pairs[i];
+      } // for
+    } // for
+    this.pairs = newPairs;
   } // expand()
 
   /**
@@ -382,9 +393,17 @@ public class ProbedHashTable<K, V> implements HashTable<K, V> {
    *
    * @return the aforementioned index.
    */
+  @SuppressWarnings("unchecked")
   int find(K key) {
-    return Math.abs(key.hashCode()) % this.pairs.length;
+    Pair <K, V> result = null;
+    int hash = key.hashCode() % this.pairs.length;
+    for (int index = 0; index < pairs.length; index++) {
+      result = ((Pair<K, V>) this.pairs[Math.abs(hash + index) % this.pairs.length]);
+      if (result == null || result.key().equals(key)) {
+        return Math.abs(hash + index) % this.pairs.length;
+      } // if
+    } // for
+    throw new RuntimeException();
   } // find(K)
-
 } // class ProbedHashTable<K, V>
 
